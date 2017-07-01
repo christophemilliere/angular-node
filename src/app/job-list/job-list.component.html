@@ -1,3 +1,6 @@
 <div *ngFor="let job of jobs">
   <p>{{job.title}}</p>
+  <p>parue il y a {{job.publishdate | daysAgo }}</p>
 </div>
+
+
