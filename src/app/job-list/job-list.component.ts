@@ -19,6 +19,10 @@ export class JobListComponent implements OnInit {
         this.error = error;
       }
     );
+    this.jobService.jobsSubject.subscribe( data =>{
+      console.log(data);
+      this.jobs = [data, ...this.jobs];
+    });
   }
 
 }
