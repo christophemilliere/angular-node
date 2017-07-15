@@ -25,7 +25,15 @@ api.post('/jobs', (req, res) => {
   addJobs = [job, ...addJobs];
   res.json(job);
 });
-
+api.get('/jobs/:id', (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const job = getAllJobs().filter(j => j.id === id);
+  if(job.length === 1){
+    res.json({success: true, job: job[0]});
+  }else{
+    res.json({success: false, message: "Pas de job"});
+  }
+});
 app.use('/api', api);
 const port = 4002;
 app.listen(port, () => {

@@ -1,3 +1,6 @@
-<p>
-  job-details works!
-</p>
+<div *ngIf='jobDetails'>
+  <pre>{{jobDetails | json }}</pre>
+</div>
+<div *ngIf="errorMessage">
+  désole: {{errorMessage}}
+</div>

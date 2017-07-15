@@ -30,6 +30,10 @@ export class JobService {
                     });
     // this.jobs = [jobData, ...this.jobs]
     // return this.jobsSubject.next(jobData);
+  }
 
+  getJobId(id) {
+    return this.http.get(this.BASE_URL + `api/jobs/${id}`)
+                    .map(res => res.json());
   }
 }
