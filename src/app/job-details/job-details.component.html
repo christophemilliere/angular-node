@@ -1,5 +1,26 @@
 <div *ngIf='jobDetails'>
-  <pre>{{jobDetails | json }}</pre>
+  <div class="panel panel-default">
+    <div class="panel-heading"><h3>{{jobDetails.title}}</h3></div>
+    <div class="panel-body">
+      <p>{{jobDetails.company}}</p>
+      <p>{{jobDetails.city}} - {{jobDetails.zipcode}}</p>
+      <p> {{jobDetails.contract}} </p>
+      <hr>
+      <p> publié le : {{jobDetails.publishdate | toShortDate}} </p>
+      <p> actualisé le : {{jobDetails.lastupdate | toShortDate}} </p>
+      <p> salaire le :  {{jobDetails.salary}} {{jobDetails.currency | toMoneySymbol}} </p>
+      <hr>
+      <b>Description du poste</b>
+      <div> {{jobDetails.description}} </div>
+      <hr>
+      <div>
+        <p> date de demarrage: {{jobDetails.startdate | toShortDate}}</p>
+        <p> status: {{jobDetails.status}}</p>
+        <p>déplacement: {{jobDetails.area}}</p>
+      </div>
+
+    </div>
+  </div>
 </div>
 <div *ngIf="errorMessage">
   désole: {{errorMessage}}

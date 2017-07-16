@@ -34,6 +34,17 @@ api.get('/jobs/:id', (req, res) => {
     res.json({success: false, message: "Pas de job"});
   }
 });
+
+api.get('/search/:term/:place?', (req, res) => {
+  const term= req.params.term.toLowerCase().trim();
+  let place = req.params.place;
+  let jobs = getAllJobs().filter( j => (j.description.toLowerCase().includes(term) || j.title.toLowerCase().includes(term)));
+  if(place){
+    place = place.toLowerCase().trim();
+    jobs = jobs.filter( j => (j.city.toLowerCase().includes(place)))
+  }
+  res.json({sucess: true, jobs});
+});
 app.use('/api', api);
 const port = 4002;
 app.listen(port, () => {

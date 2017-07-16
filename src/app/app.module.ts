@@ -13,6 +13,9 @@ import { DaysAgoPipe } from './pipes/days-ago.pipe';
 import { HomeComponent } from './home/home.component';
 import { JobDetailsComponent } from './job-details/job-details.component';
 import { AboutComponent } from './about/about.component';
+import { ToShortDatePipe } from './pipes/to-short-date.pipe';
+import { ToMoneySymbolPipe } from './pipes/to-money-symbol.pipe';
+import { SearchResultComponent } from './search-result/search-result.component';
 
 const routes = [
   {path: '', component: HomeComponent },
@@ -30,7 +33,10 @@ const routes = [
     DaysAgoPipe,
     HomeComponent,
     JobDetailsComponent,
-    AboutComponent
+    AboutComponent,
+    ToShortDatePipe,
+    ToMoneySymbolPipe,
+    SearchResultComponent
   ],
   imports: [
     BrowserModule,
