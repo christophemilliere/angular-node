@@ -13,7 +13,7 @@ export class AuthenticationComponent implements OnInit {
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
-    if(window.localStorage.getItem('jbb-data')) {
+    if(this.authService.userIsLoggedIn()) {
       console.log('localstorage');
       this.refreshFlags();
     }

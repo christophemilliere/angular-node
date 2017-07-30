@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const fakeUser = {email:"test@free.fr", password: "aze"}
+users = [{id: 1, email:"test@free.fr", nickname: 'Tutu' , password: "aze"}];
 const secret = 'qsdjS12ozehdoIJ123DJOZJLDSCqsdeffdg123ER56SDFZedhWXojqshduzaohduihqsDAqsdq';
 const jwt = require('jsonwebtoken');
 
@@ -27,15 +27,32 @@ auth.post('/login', (req, res) => {
   if(req.body){
     const email = req.body.email.toLowerCase();
     const pwd = req.body.password.toLowerCase();
+    const index = users.findIndex(user => user.email === email)
 
-    if(email === fakeUser.email && pwd === fakeUser.password){
+    if(index > -1 && users[index].password === pwd) {
       delete req.body.password
       // res.json({success: true, data: req.body});
       const token = jwt.sign({iss: 'http://localhost:4002', role: 'admin', email: req.body.email}, secret);
       res.json({success: true, token});
     }else{
-      res.json({success: false, message: "donnée manquantes"});
+      res.status(401).json({success: false, message: "Identidiants incorrects"});
     }
+  }else{
+    res.status(500).json({success: false, message: 'données manquantes!!'});
+  }
+});
+
+auth.post('/register', (req, res) => {
+  console.log(req.body);
+  if(req.body) {
+    const email = req.body.email.toLowerCase().trim();
+    const pwd = req.body.password.toLowerCase().trim();
+    const nickname = req.body.nickname.toLowerCase().trim();
+    users = [{id: Date.now(), email: email, password: pwd }, ...users]
+    res.json({success: true, users});
+    console.log(users);
+  }else{
+    res.json({success: false, message: " La création à échouée"});
   }
 });
 

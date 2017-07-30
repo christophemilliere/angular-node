@@ -18,6 +18,8 @@ import { ToShortDatePipe } from './pipes/to-short-date.pipe';
 import { ToMoneySymbolPipe } from './pipes/to-money-symbol.pipe';
 import { SearchResultComponent } from './search-result/search-result.component';
 import { AuthenticationComponent } from './authentication/authentication.component';
+import { RegisterComponent } from './register/register.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 const routes = [
   {path: '', component: HomeComponent },
@@ -26,7 +28,8 @@ const routes = [
   {path: 'jobs', component: JobListComponent },
   {path: 'about', component: AboutComponent },
   {path: 'login', component: AuthenticationComponent },
-  {path: 'register', component: AuthenticationComponent }
+  {path: 'register', component: RegisterComponent },
+  {path: 'profile', component: UserProfileComponent }
 ]
 @NgModule({
   declarations: [
@@ -41,7 +44,9 @@ const routes = [
     ToShortDatePipe,
     ToMoneySymbolPipe,
     SearchResultComponent,
-    AuthenticationComponent
+    AuthenticationComponent,
+    RegisterComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
+import * as JwtDecode from 'jwt-decode';
 
 @Injectable()
 export class AuthService {
@@ -17,5 +18,13 @@ export class AuthService {
 
   logOut() {
     window.localStorage.removeItem('jbb-data');
+  }
+
+  register(crendtials) {
+    return this.http.post(`${this.BASE_URL}register`, crendtials)
+              .map(res => res.json());
+  }
+  decodeTokent(token) {
+    return JwtDecode(token);
   }
 }
