@@ -1,7 +1,10 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-users = [{id: 1, email:"test@free.fr", nickname: 'Tutu' , password: "aze"}];
+users = [
+  {id: 1, email:"test@free.fr", nickname: 'Tutu' , password: "aze", role: "admin"},
+  {id: 1, email:"test2@free.fr", nickname: 'Tutu2' , password: "aze", role: "user"}
+];
 const secret = 'qsdjS12ozehdoIJ123DJOZJLDSCqsdeffdg123ER56SDFZedhWXojqshduzaohduihqsDAqsdq';
 const jwt = require('jsonwebtoken');
 
@@ -32,7 +35,14 @@ auth.post('/login', (req, res) => {
     if(index > -1 && users[index].password === pwd) {
       delete req.body.password
       // res.json({success: true, data: req.body});
-      const token = jwt.sign({iss: 'http://localhost:4002', role: 'admin', email: req.body.email}, secret);
+      let user = users[index];
+      let token = '';
+      if(user.email === "test@free.fr"){
+        token = jwt.sign({iss: 'http://localhost:4002', role: 'admin', email: req.body.email}, secret);
+      }else{
+        token = jwt.sign({iss: 'http://localhost:4002', role: 'user', email: req.body.email}, secret);
+      }
+
       res.json({success: true, token});
     }else{
       res.status(401).json({success: false, message: "Identidiants incorrects"});
@@ -59,7 +69,20 @@ auth.post('/register', (req, res) => {
 api.get('/jobs', (req, res) => {
   res.json(getAllJobs());
 });
-api.post('/jobs', (req, res) => {
+
+const checkUserToken = (req, res, next) =>{
+  if(!req.header('authorization')){
+    return res.status(401).json({ success: false, message: "Authentification à échouer"});
+  }
+
+  const authorizationsParts = req.header('authorization').split();
+  let token  = authorizationsParts[1];
+  const decodedToken = jwt.verify(token, secret);
+  console.log("je decode la :)", decodedToken);
+  next();
+};
+
+api.post('/jobs', checkUserToken, (req, res) => {
   const job = req.body;
   addJobs = [job, ...addJobs];
   res.json(job);

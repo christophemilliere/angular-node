@@ -1,4 +1,4 @@
-<div class="panel-body">
+<div class="panel-body" *ngIf="userIsloggedIn">
   <form [formGroup]="form" (ngSubmit)="createJob(form.value)" >
     <div class="form-group col-sm-6">
       <label for="title">Titre</label>
@@ -67,10 +67,15 @@
 
       <label for="salary">Salaire</label>
       <input type="text" name="salary" class="form-control" placeholder="Le salaire" formControlName="salary"/>-->
-
-
-
   </form>
+</div>
 
-
+<div *ngIf="!userIsloggedIn">
+  <h2>Création d'annonce réservéaux utilisateurs inscrits</h2>
+  <div>
+    Vous devez être connecté pour crée une annonce.
+    <br>
+    <a href="#" routerLink="/login">Se connecter</a> ou
+    <a href="#" routerLink="/register">créer un compte</a>
+  </div>
 </div>

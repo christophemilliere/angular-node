@@ -13,7 +13,7 @@ export class AuthService {
   }
 
   userIsLoggedIn() {
-    return window.localStorage.getItem('jbb-data');
+    return !!window.localStorage.getItem('jbb-data');
   }
 
   logOut() {

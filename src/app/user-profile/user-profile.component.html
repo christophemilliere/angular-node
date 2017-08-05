@@ -3,3 +3,11 @@
     {{decodedToken | json}}
   </pre>
 </div>
+
+<div *ngIf="isAdmin">
+  <p> je suis admin</p>
+</div>
+
+<div *ngIf="!isAdmin">
+  <p> je suis User</p>
+</div>
