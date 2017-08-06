@@ -46,6 +46,7 @@ export class JobAddFormComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private jobService: JobService, private auhtService: AuthService) { }
 
   ngOnInit() {
+    this.checkUserLoggedIn();
     this.form = this.formBuilder.group({
       id: -1,
       title: '',
@@ -67,7 +68,9 @@ export class JobAddFormComponent implements OnInit {
   }
 
   createJob(jobData) {
-    this.jobService.addJob(jobData).subscribe();
+    const token = JSON.parse(window.localStorage.getItem('jbb-data')).token;
+
+    this.jobService.addJob(jobData, token).subscribe();
     this.form.reset();
   }
 

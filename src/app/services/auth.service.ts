@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 import * as JwtDecode from 'jwt-decode';
 
@@ -23,6 +23,15 @@ export class AuthService {
   register(crendtials) {
     return this.http.post(`${this.BASE_URL}register`, crendtials)
               .map(res => res.json());
+  }
+
+  addAuthorizationHeader(token) {
+    // Authorization : bearer token
+    const authirazationHeader = new Headers({
+      'authorization': 'bearer ' + token
+    });
+
+    return new RequestOptions({headers: authirazationHeader});
   }
   decodeTokent(token) {
     return JwtDecode(token);

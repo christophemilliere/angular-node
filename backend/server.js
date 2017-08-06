@@ -11,7 +11,7 @@ const jwt = require('jsonwebtoken');
 app.use(bodyParser.json());
 app.use((req, res, next) => {
   res.header('Access-control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Content-type');
+  res.header('Access-Control-Allow-Headers', 'Content-type, Authorization');
   next();
 });
 
@@ -38,9 +38,9 @@ auth.post('/login', (req, res) => {
       let user = users[index];
       let token = '';
       if(user.email === "test@free.fr"){
-        token = jwt.sign({iss: 'http://localhost:4002', role: 'admin', email: req.body.email}, secret);
+        token = jwt.sign({iss: 'http://localhost:4002', role: 'admin', email: req.body.email, nickname: user.nickname}, secret);
       }else{
-        token = jwt.sign({iss: 'http://localhost:4002', role: 'user', email: req.body.email}, secret);
+        token = jwt.sign({iss: 'http://localhost:4002', role: 'user', email: req.body.email, nickname: user.nickname}, secret);
       }
 
       res.json({success: true, token});
@@ -58,7 +58,7 @@ auth.post('/register', (req, res) => {
     const email = req.body.email.toLowerCase().trim();
     const pwd = req.body.password.toLowerCase().trim();
     const nickname = req.body.nickname.toLowerCase().trim();
-    users = [{id: Date.now(), email: email, password: pwd }, ...users]
+    users = [{id: Date.now(), email: email, password: pwd, nickname: nickname }, ...users]
     res.json({success: true, users});
     console.log(users);
   }else{
@@ -70,15 +70,26 @@ api.get('/jobs', (req, res) => {
   res.json(getAllJobs());
 });
 
+api.get('/jobs/:email', (req, res) => {
+  const email = req.params.email;
+  const jobs = getAllJobs().filter(job => job.email === email);
+  res.json({ success: true, jobs});
+});
 const checkUserToken = (req, res, next) =>{
   if(!req.header('authorization')){
     return res.status(401).json({ success: false, message: "Authentification à échouer"});
   }
 
-  const authorizationsParts = req.header('authorization').split();
+  const authorizationsParts = req.header('authorization').split(' ');
   let token  = authorizationsParts[1];
-  const decodedToken = jwt.verify(token, secret);
-  console.log("je decode la :)", decodedToken);
+  jwt.verify(token, secret, (error, decodedToken) => {
+    if(error) {
+      return res.status(401).json({ success: false, message: 'Token non valide'})
+    }else{
+      next();
+    }
+  });
+
   next();
 };
 
